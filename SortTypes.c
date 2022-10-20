@@ -6,94 +6,6 @@
 
 #define N 1000000
 
-void merge(int array[], int start, int mid, int end) {
-    int *temp, p1, p2, size, j, k;
-    int end_o = 0, end_t = 0;
-
-    size = end - start + 1;
-    p1 = start;
-    p2 = mid + 1;
-
-    temp = (int *) malloc(size*sizeof(int));
-
-    if(temp != NULL) {
-        for(int i = 0; i < size; i++) {
-            if(!end_o && !end_t) {
-                if(array[p1] < array[p2])
-                    temp[i] = array[p1++];
-                else
-                    temp[i] = array[p2++];
-
-                if(p1 > mid)
-                    end_o = 1;
-                if(p2 > end)
-                    end_t = 1;
-                } else {
-                    if(!end_o)
-                        temp[i] = array[p1++];
-                    else
-                        temp[i] = array[p2++];
-                }
-        }
-        for(j = 0, k = start; j < size; j++, k ++)
-            array[k] = temp[j];
-    }
-    free(temp);
-}
-
-void tempArray(int array[], int temp[]) {
-    for(int i = 0; i < N; i++) {
-        array[i] = temp[i];
-    }
-}
-
-int partition(int array[], int start, int end) {
-    int left, right, pivot, aux;
-
-    left = start;
-    right = end;
-    pivot = array[start];
-
-    while(left < right) {
-        while(left <= end && array[left] <= pivot)
-            left++;
-        while(right >= 0 && array[right] > pivot)
-            right--;
-
-        if(left < right) {
-            aux = array[left];
-            array[left] = array[right];
-            array[right] = aux;
-        }
-    }
-    array[start] = array[right];
-    array[right] = pivot;
-    return right;
-}
-
-void createHeap(int array[], int i, int f) {
-    int aux = array[i];
-    int j = i * 2 + 1;
-
-    while(j <= f) {
-        if(j < f) {
-            if(array[j] < array[j + 1]) {
-                j = j + 1;
-            }
-        }
-
-        if(aux < array[j]) {
-            array[i] = array[j];
-            i = j;
-            j = 2 * i + 1;
-        }else {
-            j = f + 1;
-        }
-    }
-
-    array[i] = aux;
-}
-
 void fillArray(int array []) {
     for(int i = 0; i < N; i++) {
         array[i] = 1 + rand() % 2500;
@@ -113,6 +25,12 @@ void printArray(int array []) {
 
     for(int i = aux; i < N; i++) {
         printf("INDEX[%d]: %d\n", i, array[i]);
+    }
+}
+
+void tempArray(int array[], int temp[]) {
+    for(int i = 0; i < N; i++) {
+        array[i] = temp[i];
     }
 }
 
@@ -157,6 +75,29 @@ void selectionSort(int array[]) {
     }
 }
 
+void createHeap(int array[], int i, int f) {
+    int aux = array[i];
+    int j = i * 2 + 1;
+
+    while(j <= f) {
+        if(j < f) {
+            if(array[j] < array[j + 1]) {
+                j = j + 1;
+            }
+        }
+
+        if(aux < array[j]) {
+            array[i] = array[j];
+            i = j;
+            j = 2 * i + 1;
+        }else {
+            j = f + 1;
+        }
+    }
+
+    array[i] = aux;
+}
+
 void heapSort(int array[]) {
     int aux;
 
@@ -172,6 +113,30 @@ void heapSort(int array[]) {
     }
 }
 
+int partition(int array[], int start, int end) {
+    int left, right, pivot, aux;
+
+    left = start;
+    right = end;
+    pivot = array[start];
+
+    while(left < right) {
+        while(left <= end && array[left] <= pivot)
+            left++;
+        while(right >= 0 && array[right] > pivot)
+            right--;
+
+        if(left < right) {
+            aux = array[left];
+            array[left] = array[right];
+            array[right] = aux;
+        }
+    }
+    array[start] = array[right];
+    array[right] = pivot;
+    return right;
+}
+
 void quickSort(int array[], int start, int end) {
     int pivot;
 
@@ -181,6 +146,41 @@ void quickSort(int array[], int start, int end) {
         quickSort(array, pivot + 1, end);
     }
 
+}
+
+void merge(int array[], int start, int mid, int end) {
+    int *temp, p1, p2, size, j, k;
+    int end_o = 0, end_t = 0;
+
+    size = end - start + 1;
+    p1 = start;
+    p2 = mid + 1;
+
+    temp = (int *) malloc(size*sizeof(int));
+
+    if(temp != NULL) {
+        for(int i = 0; i < size; i++) {
+            if(!end_o && !end_t) {
+                if(array[p1] < array[p2])
+                    temp[i] = array[p1++];
+                else
+                    temp[i] = array[p2++];
+
+                if(p1 > mid)
+                    end_o = 1;
+                if(p2 > end)
+                    end_t = 1;
+                } else {
+                    if(!end_o)
+                        temp[i] = array[p1++];
+                    else
+                        temp[i] = array[p2++];
+                }
+        }
+        for(j = 0, k = start; j < size; j++, k ++)
+            array[k] = temp[j];
+    }
+    free(temp);
 }
 
 void mergeSort(int array[], int start, int end) {
