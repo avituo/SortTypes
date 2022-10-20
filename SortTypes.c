@@ -2,38 +2,46 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <math.h>
 #include <locale.h>
 
-#define N 400
+#define N 90000
+
+void merge(int array[], int start, int mid, int end) {
+    int *temp, p1, p2, i, j, k;
+    int end_o = 0, end_t = 0;
+
+
+}
 
 void tempArray(int array[], int temp[]) {
     for(int i = 0; i < N; i++) {
-        temp[i] = array[i];
+        array[i] = temp[i];
     }
 }
 
-int particiona(int array[], int inicio, int fim) {
-    int esq, dir, pivo, aux;
+int partition(int array[], int start, int end) {
+    int left, right, pivot, aux;
 
-    esq = inicio;
-    dir = fim;
-    pivo = array[inicio];
+    left = start;
+    right = end;
+    pivot = array[start];
 
-    while(esq < dir) {
-        while(array[esq] <= pivo)
-            esq++;
-        while(array[dir] > pivo)
-            dir--;
+    while(left < right) {
+        while(array[left] <= pivot)
+            left++;
+        while(array[right] > pivot)
+            right--;
 
-        if(esq < dir) {
-            aux = array[esq];
-            array[esq] = array[dir];
-            array[dir] = aux;
+        if(left < right) {
+            aux = array[left];
+            array[left] = array[right];
+            array[right] = aux;
         }
     }
-    array[inicio] = array[dir];
-    array[dir] = pivo;
-    return dir;
+    array[start] = array[right];
+    array[right] = pivot;
+    return right;
 }
 
 void createHeap(int array[], int i, int f) {
@@ -137,18 +145,26 @@ void heapSort(int array[]) {
     }
 }
 
-void quickSort(int array[], int inicio, int fim) {
-    int pivo;
+void quickSort(int array[], int start, int end) {
+    int pivot;
 
-    if(fim > inicio) {
-        pivo = particiona(array, inicio, fim);
-        quickSort(array, inicio, pivo - 1);
-        quickSort(array, pivo + 1, fim);
+    if(end > start) {
+        pivot = partition(array, start, end);
+        quickSort(array, start, pivot - 1);
+        quickSort(array, pivot + 1, end);
     }
 
 }
 
-void mergeSort() {
+void mergeSort(int array[], int start, int end) {
+    int mid;
+
+    if(start < end) {
+        mid = floor((start+end)/2);
+        mergeSort(array, start, mid);
+        mergeSort(array, mid + 1, end);
+        merge(array, start, mid, end);
+    }
 }
 
 void shellSort() {
@@ -172,7 +188,9 @@ int main() {
         switch (menu) {
         case 1:
             fillArray(array);
-            tempArray(array, temp);
+            for (int i = 0; i < N; i++) {
+                temp[i] = array[i];
+            }
             break;
 
         case 2:
@@ -186,6 +204,7 @@ int main() {
             start = clock();
             insertionSort(array);
             end = clock();
+            printf("Tempo de execução: %lf", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 4:
@@ -207,12 +226,13 @@ int main() {
             start = clock();
             quickSort(array, 0, N-1);
             end = clock();
+            tempArray(array, temp);
             break;
 
         case 7:
             tempArray(array, temp);
             start = clock();
-            mergeSort();
+            mergeSort(array, 0, N - 1);
             end = clock();
             break;
 
@@ -220,10 +240,12 @@ int main() {
             tempArray(array, temp);
             start = clock();
             shellSort();
+            end = clock();
             break;
 
         case 9:
             printArray(array);
+            printArray(temp);
             break;
 
         case 10:
