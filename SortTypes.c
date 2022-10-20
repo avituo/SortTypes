@@ -4,7 +4,7 @@
 #include <math.h>
 #include <locale.h>
 
-#define N 50000
+#define N 1000000
 
 void merge(int array[], int start, int mid, int end) {
     int *temp, p1, p2, size, j, k;
@@ -55,9 +55,9 @@ int partition(int array[], int start, int end) {
     pivot = array[start];
 
     while(left < right) {
-        while(array[left] <= pivot)
+        while(left <= end && array[left] <= pivot)
             left++;
-        while(array[right] > pivot)
+        while(right >= 0 && array[right] > pivot)
             right--;
 
         if(left < right) {
@@ -96,7 +96,7 @@ void createHeap(int array[], int i, int f) {
 
 void fillArray(int array []) {
     for(int i = 0; i < N; i++) {
-        array[i] = 1 + rand() % 5000;
+        array[i] = 1 + rand() % 2500;
     }
 }
 
@@ -140,18 +140,18 @@ void insertionSort(int array[]) {
 }
 
 void selectionSort(int array[]) {
-    int low, aux;
+    int smll, aux;
 
     for(int i = 0; i < N - 1; i++) {
-        low = i;
+        smll = i;
         for(int j = i + 1; j < N; j++) {
-            if(array[low] > array[j]) {
-                low = j;
+            if(array[smll] > array[j]) {
+                smll = j;
             }
-            if(i != low) {
+            if(i != smll) {
                 aux = array[i];
-                array[i] = array[low];
-                array[low] = aux;
+                array[i] = array[smll];
+                array[smll] = aux;
             }
         }
     }
@@ -196,23 +196,23 @@ void mergeSort(int array[], int start, int end) {
 
 void shellSort(int array[]) {
     int aux, j;
-    int h = 1;
+    int gap = 1;
 
-    while(j < N/3)
-        h = 3 * h + 1;
+    while(gap < N/3)
+        gap = 3 * gap + 1;
 
-    while(h > 0) {
-        for(int i = h; i < N; i++) {
+    while(gap > 0) {
+        for(int i = gap; i < N; i++) {
             aux = array[i];
             j = i;
 
-            while(j >= h && aux < array[j - h]) {
-                array[j] = array[j - h];
-                j = j - h;
+            while(j >= gap && aux < array[j - gap]) {
+                array[j] = array[j - gap];
+                j = j - gap;
             }
             array[j] = aux;
         }
-        h = (h - 1)/3;
+        gap = (gap - 1)/3;
     }
 
 }
@@ -224,7 +224,9 @@ int main() {
 
     clock_t start, end;
 
-    int array[N], keyNumber, menu, temp[N];
+    int keyNumber, menu;
+    static int array[N];
+    static int temp[N];
 
     do{
         printf("\n(1) Preencher o array com números aleatórios\n(2) Ordenar o array pelo método Bubble Sort\n(3) Ordenar o array pelo método Insertion Sort\n(4) Ordenar o array pelo método Selection Sort\n(5) Ordenar o array pelo método Heap Sort\n(6) Ordenar o array pelo método Quick Sort\n(7) Ordenar o array pelo método Merge Sort\n(8) Ordenar o array pelo método Shell Sort\n(9) Imprimir o array\n\nOpção: ");
@@ -296,14 +298,11 @@ int main() {
             break;
 
         case 9:
-            printf("Array não ordenado: \n");
+            printf("\nArray não ordenado: \n\n");
             printArray(temp);
-            printf("Array ordenado: \n");
+            printf("\nArray ordenado: \n\n");
             printArray(array);
             break;
-
-        case 10:
-            printf("%lf", ((double)(end - start)/CLOCKS_PER_SEC));
 
         default :
             break;
