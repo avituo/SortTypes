@@ -4,13 +4,41 @@
 #include <math.h>
 #include <locale.h>
 
-#define N 90000
+#define N 50000
 
 void merge(int array[], int start, int mid, int end) {
-    int *temp, p1, p2, i, j, k;
+    int *temp, p1, p2, size, j, k;
     int end_o = 0, end_t = 0;
 
+    size = end - start + 1;
+    p1 = start;
+    p2 = mid + 1;
 
+    temp = (int *) malloc(size*sizeof(int));
+
+    if(temp != NULL) {
+        for(int i = 0; i < size; i++) {
+            if(!end_o && !end_t) {
+                if(array[p1] < array[p2])
+                    temp[i] = array[p1++];
+                else
+                    temp[i] = array[p2++];
+
+                if(p1 > mid)
+                    end_o = 1;
+                if(p2 > end)
+                    end_t = 1;
+                } else {
+                    if(!end_o)
+                        temp[i] = array[p1++];
+                    else
+                        temp[i] = array[p2++];
+                }
+        }
+        for(j = 0, k = start; j < size; j++, k ++)
+            array[k] = temp[j];
+    }
+    free(temp);
 }
 
 void tempArray(int array[], int temp[]) {
@@ -68,7 +96,7 @@ void createHeap(int array[], int i, int f) {
 
 void fillArray(int array []) {
     for(int i = 0; i < N; i++) {
-        array[i] = 1 + rand() % 300;
+        array[i] = 1 + rand() % 5000;
     }
 }
 
@@ -166,7 +194,27 @@ void mergeSort(int array[], int start, int end) {
     }
 }
 
-void shellSort() {
+void shellSort(int array[]) {
+    int aux, j;
+    int h = 1;
+
+    while(j < N/3)
+        h = 3 * h + 1;
+
+    while(h > 0) {
+        for(int i = h; i < N; i++) {
+            aux = array[i];
+            j = i;
+
+            while(j >= h && aux < array[j - h]) {
+                array[j] = array[j - h];
+                j = j - h;
+            }
+            array[j] = aux;
+        }
+        h = (h - 1)/3;
+    }
+
 }
 
 
@@ -193,8 +241,10 @@ int main() {
 
         case 2:
             start = clock();
+            tempArray(array, temp);
             bubbleSort(array);
             end = clock();
+            printf("Tempo de execução(Bubble Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 3:
@@ -202,14 +252,15 @@ int main() {
             start = clock();
             insertionSort(array);
             end = clock();
-            printf("Tempo de execução: %lf", ((double)(end - start)/CLOCKS_PER_SEC));
+            printf("Tempo de execução(Insertion Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 4:
-            tempArray(array, temp);
             start = clock();
+            tempArray(array, temp);
             selectionSort(array);
             end = clock();
+            printf("Tempo de execução(Selection Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 5:
@@ -217,6 +268,7 @@ int main() {
             start = clock();
             heapSort(array);
             end = clock();
+            printf("Tempo de execução(Heap Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 6:
@@ -224,7 +276,7 @@ int main() {
             start = clock();
             quickSort(array, 0, N-1);
             end = clock();
-            tempArray(array, temp);
+            printf("Tempo de execução(Quick Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 7:
@@ -232,18 +284,22 @@ int main() {
             start = clock();
             mergeSort(array, 0, N - 1);
             end = clock();
+            printf("Tempo de execução(Merge Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 8:
             tempArray(array, temp);
             start = clock();
-            shellSort();
+            shellSort(array);
             end = clock();
+            printf("Tempo de execução(Shell Sort): %lf\n", ((double)(end - start)/CLOCKS_PER_SEC));
             break;
 
         case 9:
-            printArray(array);
+            printf("Array não ordenado: \n");
             printArray(temp);
+            printf("Array ordenado: \n");
+            printArray(array);
             break;
 
         case 10:
