@@ -229,7 +229,16 @@ int main() {
     static int temp[N];
 
     do{
-        printf("\n(1) Preencher o array com números aleatórios\n(2) Ordenar o array pelo método Bubble Sort\n(3) Ordenar o array pelo método Insertion Sort\n(4) Ordenar o array pelo método Selection Sort\n(5) Ordenar o array pelo método Heap Sort\n(6) Ordenar o array pelo método Quick Sort\n(7) Ordenar o array pelo método Merge Sort\n(8) Ordenar o array pelo método Shell Sort\n(9) Imprimir o array\n\nOpção: ");
+        printf("\n(1) Preencher o array com números aleatórios");
+        printf("\n(2) Ordenar o array pelo método Bubble Sort");
+        printf("\n(3) Ordenar o array pelo método Insertion Sort");
+        printf("\n(4) Ordenar o array pelo método Selection Sort");
+        printf("\n(5) Ordenar o array pelo método Heap Sort");
+        printf("\n(6) Ordenar o array pelo método Quick Sort");
+        printf("\n(7) Ordenar o array pelo método Merge Sort");
+        printf("\n(8) Ordenar o array pelo método Shell Sort");
+        printf("\n(9) Imprimir o array\n");
+        printf("\nOpção: ");
         scanf("%d", &menu);
         system("cls || clear");
 
