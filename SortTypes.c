@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <time.h>
 #include <math.h>
 #include <locale.h>
@@ -178,7 +177,6 @@ int main() {
     clock_t start, end;
 
     int array[N], keyNumber, menu, temp[N];
-    bool found;
 
     do{
         printf("\n(1) Preencher o array com números aleatórios\n(2) Ordenar o array pelo método Bubble Sort\n(3) Ordenar o array pelo método Insertion Sort\n(4) Ordenar o array pelo método Selection Sort\n(5) Ordenar o array pelo método Heap Sort\n(6) Ordenar o array pelo método Quick Sort\n(7) Ordenar o array pelo método Merge Sort\n(8) Ordenar o array pelo método Shell Sort\n(9) Imprimir o array\n\nOpção: ");
