@@ -4,7 +4,7 @@
 #include <math.h>
 #include <locale.h>
 
-#define N 1000000
+#define N 100000000
 
 void fillArray(int array []) {
     for(int i = 0; i < N; i++) {
@@ -224,7 +224,7 @@ int main() {
 
     clock_t start, end;
 
-    int keyNumber, menu;
+    char menu;
     static int array[N];
     static int temp[N];
 
@@ -240,6 +240,7 @@ int main() {
         printf("\n(9) Imprimir o array\n");
         printf("\nOpção: ");
         scanf("%d", &menu);
+
         system("cls || clear");
 
         switch (menu) {
@@ -314,9 +315,10 @@ int main() {
             break;
 
         default :
+            printf("Valor Inválido!\nTente novamente: \n");
             break;
         }
-    } while(menu);
+    } while(menu != 0);
 
     return 0;
 }
